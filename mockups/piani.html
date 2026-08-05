@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Piani — OMNISCENT®</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   OMNISCENT® — Piani.  Stessi token di vetrina-v2.html
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --bg-deep:#08080A; --bg-base:#0B0B0F; --bg-elev:#121218;
+  --surface:rgba(255,255,255,.028); --surface-hi:rgba(255,255,255,.055);
+  --border:rgba(255,255,255,.08); --border-hi:rgba(255,255,255,.14);
+  --fg:#EDEDF0; --fg-muted:#8A8F98; --fg-dim:#5A5F68;
+  --violet:#8B5CF6; --violet-hi:#A78BFA;
+  --violet-btn:#7C3AED; --violet-btn-hi:#8650F5; --violet-deep:#5B21B6;
+  --violet-glow:rgba(139,92,246,.22);
+  --cyan:#38BDF8; --up:#34D399; --gold:#E3B341;
+  --f-display:'Outfit',system-ui,sans-serif;
+  --f-body:'Manrope',system-ui,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,monospace;
+  --s-3:24px; --s-4:32px; --s-5:48px; --s-6:64px; --s-7:96px; --s-8:128px;
+  --radius:14px; --ease:cubic-bezier(.16,1,.3,1); --maxw:1240px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-base);color:var(--fg);font-family:var(--f-body);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--violet);color:#fff}
+body::after{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.032;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+@media(min-width:1024px){.wrap{padding:0 40px}}
+
+.overline{font-family:var(--f-mono);font-size:11px;font-weight:500;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+.overline .dot{display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);margin-right:10px;vertical-align:middle;box-shadow:0 0 10px var(--cyan)}
+h1,h2,h3{font-family:var(--f-display);font-weight:300;letter-spacing:-.03em;line-height:1.02}
+h2{font-size:clamp(1.9rem,3.8vw,3rem)}
+h3{font-size:clamp(1.3rem,1.9vw,1.6rem);font-weight:400;letter-spacing:-.02em;line-height:1.2}
+p{color:var(--fg-muted)}
+.lead{font-size:clamp(1rem,1.3vw,1.125rem);line-height:1.7;max-width:62ch}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;padding:0 26px;border-radius:10px;border:1px solid transparent;
+  font-family:var(--f-body);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;
+  transition:transform .25s var(--ease),background .25s var(--ease),
+             box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.btn:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.btn-primary{background:var(--violet-btn);color:#fff;box-shadow:0 10px 34px var(--violet-glow)}
+.btn-primary:hover{background:var(--violet-btn-hi);transform:translateY(-2px);box-shadow:0 16px 44px var(--violet-glow)}
+.btn-ghost{background:var(--surface);color:var(--fg);border-color:var(--border-hi)}
+.btn-ghost:hover{background:var(--surface-hi);border-color:var(--violet);transform:translateY(-2px)}
+.btn-full{width:100%}
+.btn svg{transition:transform .25s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+
+.blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(6%,-8%) scale(1.12)}66%{transform:translate(-5%,6%) scale(.94)}}
+.blob-v{width:52vw;height:52vw;max-width:660px;max-height:660px;
+  background:radial-gradient(circle,rgba(124,58,237,.28),transparent 68%);
+  animation:drift 26s ease-in-out infinite}
+.blob-c{width:40vw;height:40vw;max-width:520px;max-height:520px;
+  background:radial-gradient(circle,rgba(14,165,233,.2),transparent 68%);
+  animation:drift 34s ease-in-out infinite reverse}
+.grid-bg{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 15%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,#000 15%,transparent 78%);
+  opacity:.5}
+
+/* ═══ HEADER ═══ */
+header{position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,11,15,.72);backdrop-filter:blur(22px) saturate(160%);
+  border-bottom:1px solid var(--border)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:.24em;
+  color:var(--fg);text-decoration:none;display:flex;align-items:center;gap:11px}
+.logo-mark{width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(140deg,var(--violet),var(--cyan));
+  box-shadow:0 0 22px var(--violet-glow);position:relative;flex:none}
+.logo-mark::after{content:'';position:absolute;inset:6px;border-radius:3px;background:var(--bg-base)}
+
+/* ─── Logo ─── */
+.logo-img{height:56px;width:auto;display:block}
+.logo{gap:0}
+@media(max-width:1023px){.logo-img{height:40px}}
+footer .logo-img{height:52px}
+.nav-links{display:none;gap:34px;align-items:center}
+@media(min-width:1024px){.nav-links{display:flex}}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--fg-muted);text-decoration:none;
+  transition:color .2s var(--ease);position:relative;padding:6px 0}
+.nav-links a:hover,.nav-links a.active{color:var(--fg)}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:0;width:0;height:1px;
+  background:var(--violet);transition:width .3s var(--ease)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:16px}
+@media(max-width:1023px){.nav-right .btn{display:none}.nav-right{gap:8px}}
+.lang{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--fg-dim);
+  background:none;border:1px solid var(--border);border-radius:7px;padding:7px 10px;
+  cursor:pointer;min-height:34px;transition:all .2s var(--ease)}
+.lang:hover{color:var(--fg);border-color:var(--border-hi)}
+.lang b{color:var(--fg)}
+.burger{display:flex;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;
+  padding:12px;min-height:44px;min-width:44px;align-items:center;justify-content:center}
+@media(min-width:1024px){.burger{display:none}}
+.burger span{width:20px;height:1.5px;background:var(--fg);border-radius:2px}
+
+/* ─── Accedi / Area riservata ─── */
+.btn-auth{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 16px;
+  border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--fg-muted);
+  font-family:var(--f-body);font-size:13px;font-weight:500;text-decoration:none;cursor:pointer;
+  transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease)}
+.btn-auth:hover{color:var(--fg);border-color:rgba(139,92,246,.45);background:var(--surface)}
+.btn-auth:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+/* variante utente autenticato */
+.btn-auth.logged{color:var(--violet-hi);border-color:rgba(139,92,246,.35)}
+.btn-auth.logged:hover{background:rgba(139,92,246,.1)}
+@media(max-width:1023px){.nav-right .btn-auth{display:none}}
+
+/* ─── Menu mobile ─── */
+.mobile-menu{position:fixed;top:84px;left:0;right:0;max-height:calc(100vh - 84px);z-index:98;display:none;flex-direction:column;
+  padding:16px 24px 26px;background:rgba(11,11,15,.97);backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--border);overflow-y:auto}
+.mobile-menu.open{display:flex}
+@media(min-width:1024px){.mobile-menu{display:none!important}}
+.mobile-menu a.mm-link{font-size:16px;font-weight:500;color:var(--fg);text-decoration:none;
+  padding:14px 0;border-bottom:1px solid var(--border);min-height:44px;display:flex;align-items:center}
+.mm-actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.mm-actions .btn-auth{justify-content:center;min-height:48px;font-size:14px}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;padding:184px 0 var(--s-6);overflow:hidden;text-align:center}
+.hero .blob-v{top:-30%;left:50%;transform:translateX(-50%)}
+.hero .blob-c{bottom:-40%;right:-10%}
+/* :not() is required — senza, questa regola sovrascrive position:absolute di
+   .blob/.grid-bg (stessa specificità, più avanti nel foglio) e finiscono nel flusso */
+.hero>*:not(.blob):not(.grid-bg){position:relative;z-index:2}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);font-weight:200;letter-spacing:-.04em;
+  line-height:1;margin:22px 0 0;color:#fff}
+.hero h1 .accent{font-weight:400;
+  background:linear-gradient(100deg,var(--violet-hi),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{margin:26px auto 0}
+/* educational-scope notice — regulatory guardrail, must stay visible */
+.scope{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:32px;
+  padding:12px 22px;border:1px solid var(--border);border-radius:99px;background:var(--surface)}
+.scope span{font-family:var(--f-mono);font-size:10px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--fg-muted);display:flex;align-items:center;gap:7px}
+.scope svg{color:var(--up);flex:none}
+
+/* ═══ PRICING CARDS ═══ */
+/* stretch (not start) so the cards match height and .feats{flex:1} lines the CTAs up */
+.tiers{display:grid;gap:18px;align-items:stretch}
+@media(min-width:960px){.tiers{grid-template-columns:repeat(3,1fr);gap:16px}}
+.tier{position:relative;border:1px solid var(--border);border-radius:18px;
+  background:linear-gradient(170deg,rgba(255,255,255,.038),rgba(255,255,255,.008));
+  padding:34px 30px 32px;display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .45s var(--ease),border-color .45s var(--ease),box-shadow .45s var(--ease)}
+.tier:hover{transform:translateY(-5px);border-color:rgba(139,92,246,.4);
+  box-shadow:0 26px 70px rgba(0,0,0,.5)}
+/* ascending rail: 1/3 → 2/3 → 3/3, the value ladder made literal */
+.tier .rail{position:absolute;top:0;left:0;height:2px;border-radius:0 2px 2px 0;
+  background:linear-gradient(90deg,var(--violet),var(--cyan))}
+.tier.t1 .rail{width:33%}.tier.t2 .rail{width:66%}.tier.t3 .rail{width:100%}
+.tier.feat{border-color:rgba(139,92,246,.42);
+  background:linear-gradient(170deg,rgba(139,92,246,.09),rgba(255,255,255,.01));
+  box-shadow:0 0 54px rgba(139,92,246,.1)}
+.tier-badge{position:absolute;top:16px;right:16px;font-family:var(--f-mono);font-size:9px;
+  font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--violet-hi);
+  border:1px solid rgba(139,92,246,.4);background:rgba(139,92,246,.13);
+  padding:4px 9px;border-radius:5px}
+.tier-lvl{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--fg-dim);margin-bottom:20px;display:block}
+.tier h3{color:#fff;margin-bottom:8px}
+.tier .what{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:22px}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.price .amt{font-family:var(--f-display);font-size:2.7rem;font-weight:200;
+  letter-spacing:-.045em;color:#fff;line-height:1}
+.price .per{font-family:var(--f-mono);font-size:11.5px;color:var(--fg-muted)}
+.price-note{font-size:12.5px;color:var(--fg-dim);margin-bottom:24px;min-height:19px}
+.tier .desc{font-size:14px;line-height:1.7;padding-bottom:24px;margin-bottom:24px;
+  border-bottom:1px solid var(--border)}
+.feats{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:30px;flex:1}
+.feats li{display:flex;gap:11px;font-size:14px;line-height:1.55;color:var(--fg)}
+.feats svg{flex:none;margin-top:3px;color:var(--violet-hi)}
+.feats li.muted{color:var(--fg-dim)}
+.feats li.muted svg{color:var(--fg-dim)}
+.tier-foot{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--fg-dim);margin-top:16px;text-align:center}
+
+/* ═══ FOUNDING OFFER ═══ */
+.founding{position:relative;overflow:hidden;margin-top:var(--s-6);
+  border:1px solid rgba(227,179,65,.3);border-radius:18px;padding:36px 32px;
+  background:linear-gradient(150deg,rgba(227,179,65,.08),rgba(227,179,65,.015) 60%,transparent);
+  display:grid;gap:28px;align-items:center}
+@media(min-width:900px){.founding{grid-template-columns:1fr auto}}
+.founding .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.founding .k i{width:6px;height:6px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 10px var(--gold);animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.founding h3{color:#fff;margin-bottom:12px}
+.founding p{font-size:14px;line-height:1.7;max-width:64ch}
+.founding .amt{font-family:var(--f-display);font-size:2.4rem;font-weight:200;
+  letter-spacing:-.04em;color:#fff;line-height:1;display:block;margin-bottom:10px}
+.bundle{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:22px}
+.bundle li{display:flex;gap:11px;font-size:14px;line-height:1.55;color:var(--fg)}
+.bundle svg{flex:none;margin-top:3px;color:var(--gold)}
+.bundle li strong{color:#fff;font-weight:600}
+.bundle li.off{color:var(--fg-dim)}
+.bundle li.off svg{color:var(--fg-dim)}
+.founding-buy{text-align:center}
+@media(min-width:900px){.founding-buy{min-width:230px}}
+.founding-buy .once{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--gold);display:block;margin-bottom:20px}
+
+/* ═══ COMPARISON TABLE ═══ */
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  border:1px solid var(--border);border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;min-width:660px}
+thead th{font-family:var(--f-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--fg-dim);font-weight:500;text-align:center;padding:20px 16px;
+  border-bottom:1px solid var(--border);background:var(--surface);white-space:nowrap}
+thead th:first-child{text-align:left;min-width:250px}
+thead th.hi{color:var(--violet-hi)}
+tbody td{padding:16px;border-bottom:1px solid var(--border);text-align:center;font-size:14px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface)}
+tbody td:first-child{text-align:left;color:var(--fg);font-size:14px}
+tbody td .sub{display:block;font-size:12px;color:var(--fg-dim);margin-top:3px}
+td.hi{background:rgba(139,92,246,.045)}
+.yes{color:var(--up)}
+.no{color:var(--fg-dim)}
+.cellnote{font-family:var(--f-mono);font-size:11px;color:var(--fg-muted)}
+.tbl-hint{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--fg-dim);margin-top:14px;display:none}
+@media(max-width:768px){.tbl-hint{display:block}}
+
+/* ═══ LADDER / PERCORSO ═══ */
+.steps{display:grid;gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+@media(min-width:900px){.steps{grid-template-columns:repeat(3,1fr)}}
+.step{background:var(--bg-base);padding:36px 30px;transition:background .45s var(--ease)}
+.step:hover{background:var(--bg-elev)}
+.step .n{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;
+  color:var(--violet-hi);display:block;margin-bottom:20px}
+.step h3{color:#fff;font-size:1.15rem;margin-bottom:12px}
+.step p{font-size:14px;line-height:1.7}
+
+/* ═══ SECTIONS / FAQ / CTA / FOOTER ═══ */
+.sec{padding:var(--s-7) 0;position:relative}
+.sec-head{margin-bottom:var(--s-6);max-width:62ch}
+.sec-head h2{margin-top:16px}
+.sec-head p{margin-top:18px}
+.faq{border-top:1px solid var(--border)}
+.faq details{border-bottom:1px solid var(--border)}
+.faq summary{list-style:none;cursor:pointer;padding:26px 0;display:flex;justify-content:space-between;
+  align-items:center;gap:24px;font-family:var(--f-display);font-size:clamp(1rem,1.4vw,1.15rem);
+  font-weight:400;color:var(--fg);transition:color .3s var(--ease);min-height:44px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:hover{color:var(--violet-hi)}
+.faq summary:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:4px}
+.faq .chev{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;color:var(--fg-muted);transition:.35s var(--ease)}
+.faq details[open] .chev{transform:rotate(45deg);border-color:var(--violet);color:var(--violet-hi)}
+.faq .ans{padding:0 0 28px;max-width:80ch;font-size:14.5px;line-height:1.75}
+
+.cta-final{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--border-hi);
+  padding:var(--s-7) 34px;text-align:center;
+  background:linear-gradient(165deg,rgba(139,92,246,.11),rgba(56,189,248,.05) 55%,transparent)}
+.cta-final .blob-v{width:600px;height:600px;top:-60%;left:50%;transform:translateX(-50%);opacity:.6}
+.cta-final>*:not(.blob){position:relative;z-index:2}
+.cta-final h2{color:#fff;max-width:20ch;margin:16px auto 0}
+.cta-final p{margin:20px auto 0;max-width:54ch}
+.cta-final .btns{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:36px}
+
+footer{border-top:1px solid var(--border);padding:var(--s-6) 0 40px;margin-top:var(--s-7)}
+.foot-grid{display:grid;gap:var(--s-5)}
+@media(min-width:768px){.foot-grid{grid-template-columns:1.6fr 1fr 1fr}}
+.foot-grid h4{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--fg-dim);margin-bottom:20px;font-weight:500}
+.foot-grid ul{list-style:none;display:flex;flex-direction:column;gap:13px}
+.foot-grid a{font-size:14px;color:var(--fg-muted);text-decoration:none;transition:color .2s var(--ease)}
+.foot-grid a:hover{color:var(--fg)}
+.risk{font-size:11.5px;line-height:1.65;color:var(--fg-dim);max-width:78ch;margin-top:20px}
+.foot-bot{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;
+  margin-top:var(--s-6);padding-top:28px;border-top:1px solid var(--border)}
+.foot-bot span{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;color:var(--fg-dim)}
+
+.rv{opacity:0;transform:translateY(30px);
+  transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.09s}.rv.d2{transition-delay:.18s}.rv.d3{transition-delay:.27s}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="vetrina-v2.html" class="logo"><img src="omniscent-logo.png" width="1195" height="357" alt="OMNISCENT® — Finance &amp; Education" class="logo-img"></a>
+    <nav class="nav-links">
+      <a href="vetrina-v2.html#method">Metodo</a>
+      <a href="vetrina-v2.html#services">Servizi</a>
+      <a href="#tiers" class="active">Piani</a>
+      <a href="vetrina-v2.html#stats">Risultati</a>
+      <a href="vetrina-v2.html#about">Chi siamo</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <button class="lang" aria-label="Cambia lingua"><b>IT</b> / EN</button>
+      <a href="#login" class="btn-auth" data-auth><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span data-auth-label>Accedi</span></a>
+      <a href="#contact" class="btn btn-primary" style="min-height:42px;padding:0 20px;font-size:13px">Inizia ora</a>
+      <button class="burger" aria-label="Apri menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="vetrina-v2.html#method" class="mm-link">Metodo</a>
+    <a href="vetrina-v2.html#services" class="mm-link">Servizi</a>
+    <a href="#tiers" class="mm-link">Piani</a>
+    <a href="vetrina-v2.html#stats" class="mm-link">Risultati</a>
+    <a href="vetrina-v2.html#about" class="mm-link">Chi siamo</a>
+    <a href="#faq" class="mm-link">FAQ</a>
+    <div class="mm-actions">
+      <a href="#contact" class="btn btn-primary">Inizia ora</a>
+      <a href="#login" class="btn-auth" data-auth><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg><span data-auth-label>Accedi</span></a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="blob blob-v"></div>
+  <div class="blob blob-c"></div>
+  <div class="wrap">
+    <p class="overline"><span class="dot"></span>Piani e percorsi</p>
+    <h1>Tre livelli.<br><span class="accent">Una scala.</span></h1>
+    <p class="lead">Si parte dalle fondamenta e si sale solo quando ha senso.
+      Ogni livello è completo in sé — nessuno ti obbliga al successivo, ma ognuno
+      rende il successivo più efficace.</p>
+    <div class="scope">
+      <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Formazione e analisi generale</span>
+      <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Nessun segnale operativo</span>
+      <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Nessuna consulenza personalizzata</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TIERS ═══════════ -->
+<section id="tiers" style="padding-bottom:var(--s-7)">
+  <div class="wrap">
+    <div class="tiers">
+
+      <!-- 1 -->
+      <article class="tier t1 rv">
+        <span class="rail"></span>
+        <span class="tier-lvl">Livello 01</span>
+        <h3>Corso d'ingresso</h3>
+        <p class="what">Le fondamenta</p>
+        <div class="price"><span class="amt">399 €</span><span class="per">una tantum</span></div>
+        <p class="price-note">Pagamento singolo · accesso permanente</p>
+        <p class="desc">Il metodo dalle basi: come si legge il mercato, come si costruisce
+          uno screening ripetibile e come si gestisce il rischio. Una volta per tutte.</p>
+        <ul class="feats">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Struttura di mercato e lettura degli strumenti</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sistema di screening ripetibile: setup TradingView, framework breadth / VIX / credit spread</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Gestione del rischio e position sizing</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Modulo su bias cognitivi e disciplina: overconfidence, avversione alle perdite, disposition effect</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost btn-full">Inizia dal corso</a>
+        <p class="tier-foot">Nessun prerequisito</p>
+      </article>
+
+      <!-- 2 -->
+      <article class="tier t2 feat rv d1">
+        <span class="rail"></span>
+        <span class="tier-badge">Più scelto</span>
+        <span class="tier-lvl">Livello 02</span>
+        <h3>Sezione Advanced</h3>
+        <p class="what">Accesso ai contenuti</p>
+        <div class="price"><span class="amt">90 €</span><span class="per">/ mese</span></div>
+        <p class="price-note">Abbonamento · disdici quando vuoi</p>
+        <p class="desc">Il contesto di mercato aggiornato con continuità, settimana dopo
+          settimana. Non include il corso d'ingresso.</p>
+        <ul class="feats">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Analisi settimanale di contesto di mercato + watchlist</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Community moderata</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Q&amp;A di gruppo mensile</li>
+          <li class="muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Corso d'ingresso non incluso nell'abbonamento</li>
+          <li class="muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Nessuna revisione individuale dei tuoi trade</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary btn-full">Attiva l'abbonamento</a>
+        <p class="tier-foot">Nessun prerequisito</p>
+      </article>
+
+      <!-- 3 -->
+      <article class="tier t3 rv d2">
+        <span class="rail"></span>
+        <span class="tier-lvl">Livello 03</span>
+        <h3>Coaching privato</h3>
+        <p class="what">Accesso alla persona</p>
+        <div class="price"><span class="amt">1.500 €</span><span class="per">/ trimestre</span></div>
+        <p class="price-note">Rinnovabile · posti limitati per ciclo</p>
+        <p class="desc">Lavoro uno-a-uno sul tuo operato reale: i tuoi trade, il tuo diario,
+          i tuoi schemi ricorrenti. È l'unico livello in cui compri il mio tempo.</p>
+        <ul class="feats">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Revisione dei tuoi trade e del tuo diario reali</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Feedback sui tuoi pattern psicologici individuali</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Adattamento del sistema al tuo capitale e alla tua tolleranza al rischio</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Accountability strutturata</li>
+          <li class="muted"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>Corso d'ingresso non incluso</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost btn-full">Candidati al coaching</a>
+        <p class="tier-foot">Corso d'ingresso richiesto, a parte</p>
+      </article>
+    </div>
+
+    <!-- Founding offer -->
+    <aside class="founding rv d2">
+      <div>
+        <p class="k"><i></i>Offerta founding member · finestra limitata</p>
+        <h3>Tutti e tre i livelli, in un pagamento unico</h3>
+        <p>È l'unica formula che mette insieme fondamenta, contesto continuo e lavoro
+          uno-a-uno. Un solo pagamento: entri dal primo giorno con tutto quello che serve,
+          senza costruire il percorso un pezzo alla volta.</p>
+        <ul class="bundle">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Corso d'ingresso completo</strong> — le fondamenta, accesso permanente</span></li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Sezione Advanced a vita</strong> — analisi settimanale, watchlist, community, Q&amp;A</span></li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Un ciclo di coaching privato da 3 mesi</strong> — sessioni 1-to-1 sul tuo operato reale</span></li>
+          <li class="off"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg><span>Dal secondo ciclo il coaching si rinnova a listino — corso e Advanced restano tuoi per sempre</span></li>
+        </ul>
+        <p style="font-size:12.5px;margin-top:18px">Comprando i tre livelli separatamente il
+          primo anno spenderesti <strong style="color:var(--fg)">2.979 €</strong> (399 + 1.500 +
+          12 × 90). L'offerta chiude alla fine della finestra di lancio e non verrà riproposta.</p>
+      </div>
+      <div class="founding-buy">
+        <span class="amt">2.500 €</span>
+        <span class="once">Pagamento unico · tutti e tre i livelli</span>
+        <a href="#contact" class="btn btn-ghost btn-full" style="border-color:rgba(227,179,65,.42)">Blocca il posto</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ═══════════ COMPARISON ═══════════ -->
+<section class="sec" style="background:var(--bg-deep)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="overline"><span class="dot"></span>Confronto</p>
+      <h2>Cosa include ogni livello</h2>
+      <p class="lead">La differenza vera non è la quantità di contenuti, ma se stai comprando
+        accesso ai <em style="font-style:normal;color:var(--fg)">contenuti</em> o accesso alla
+        <em style="font-style:normal;color:var(--fg)">persona</em>.</p>
+    </div>
+
+    <div class="table-scroll rv d1">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">&nbsp;</th>
+            <th scope="col">Corso</th>
+            <th scope="col" class="hi">Advanced</th>
+            <th scope="col">Coaching</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Modello di pagamento</td>
+            <td><span class="cellnote">Una tantum</span></td>
+            <td class="hi"><span class="cellnote">Mensile</span></td>
+            <td><span class="cellnote">Trimestrale</span></td>
+          </tr>
+          <tr>
+            <td>Fondamenta del metodo<span class="sub">Struttura di mercato, screening, rischio — solo col corso</span></td>
+            <td><span class="yes">✓</span></td>
+            <td class="hi"><span class="no">—</span></td>
+            <td><span class="no">—</span><span class="sub">Prerequisito, da acquistare a parte</span></td>
+          </tr>
+          <tr>
+            <td>Modulo bias cognitivi e disciplina</td>
+            <td><span class="yes">✓</span></td>
+            <td class="hi"><span class="no">—</span></td>
+            <td><span class="no">—</span></td>
+          </tr>
+          <tr>
+            <td>Analisi settimanale + watchlist</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="yes">✓</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Community moderata</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="yes">✓</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Q&amp;A di gruppo mensile</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="yes">✓</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Revisione dei tuoi trade e del diario</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="no">—</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Feedback sui tuoi pattern psicologici</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="no">—</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Sistema adattato a capitale e rischio</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="no">—</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Accountability strutturata</td>
+            <td><span class="no">—</span></td>
+            <td class="hi"><span class="no">—</span></td>
+            <td><span class="yes">✓</span></td>
+          </tr>
+          <tr>
+            <td>Prerequisito</td>
+            <td><span class="cellnote">Nessuno</span></td>
+            <td class="hi"><span class="cellnote">Nessuno</span></td>
+            <td><span class="cellnote">Corso d'ingresso</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-hint">← Scorri la tabella orizzontalmente →</p>
+    <p style="font-size:13px;margin-top:20px">La tabella confronta i tre piani acquistati
+      singolarmente. L'<a href="#tiers" style="color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(227,179,65,.4)">offerta
+      founding member a 2.500 €</a> li unisce tutti e tre in un pagamento unico — corso e Advanced
+      a vita, coaching per un ciclo da 3 mesi.</p>
+  </div>
+</section>
+
+<!-- ═══════════ PERCORSO ═══════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="overline"><span class="dot"></span>Come si sale</p>
+      <h2>Il percorso, in ordine</h2>
+      <p class="lead">Non serve partire dall'alto. Serve partire dal punto giusto per te.</p>
+    </div>
+    <div class="steps rv d1">
+      <article class="step">
+        <span class="n">01 — FONDAMENTA</span>
+        <h3>Impari il metodo</h3>
+        <p>Il corso ti dà la struttura: come leggere il mercato, come filtrare, come
+          dimensionare il rischio. È la base comune di tutto il resto.</p>
+      </article>
+      <article class="step">
+        <span class="n">02 — CONTINUITÀ</span>
+        <h3>Resti nel contesto</h3>
+        <p>Con l'Advanced il metodo non invecchia: ogni settimana vedi come si applica
+          al mercato reale, con una community intorno.</p>
+      </article>
+      <article class="step">
+        <span class="n">03 — PERSONALIZZAZIONE</span>
+        <h3>Lo adatti a te</h3>
+        <p>Nel coaching lavoriamo sui tuoi trade e sui tuoi schemi. È qui che il metodo
+          smette di essere generale e diventa tuo.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FAQ ═══════════ -->
+<section class="sec" id="faq" style="background:var(--bg-deep)">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="overline"><span class="dot"></span>Prima di scegliere</p>
+      <h2>Domande sui piani</h2>
+    </div>
+    <div class="faq rv d1">
+      <details open>
+        <summary>Devo per forza fare il corso prima del coaching?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">Sì, ed è un acquisto separato: il corso non è compreso nella quota del coaching.
+          Il coaching privato è tempo uno-a-uno, e non ha senso spenderlo a insegnare fondamenta che il
+          corso copre una volta per tutte. Chi arriva avendo già la base usa ogni sessione per il lavoro
+          che conta davvero: i propri trade, i propri schemi. L'Advanced invece non ha prerequisiti.</p>
+      </details>
+      <details>
+        <summary>Il corso è incluso nell'Advanced o nel Coaching?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">Nell'abbonamento mensile e nel coaching presi singolarmente no: lì il corso va
+          acquistato a parte. L'unica eccezione è l'<strong style="color:var(--gold)">offerta founding
+          member a 2.500 €</strong>, che comprende corso, Advanced a vita e un ciclo di coaching da
+          3 mesi. Fuori da quella finestra, i contenuti del corso si ottengono solo comprando il corso.</p>
+      </details>
+      <details>
+        <summary>Qual è la differenza reale tra Advanced e Coaching?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">Con l'Advanced compri accesso ai <strong style="color:var(--fg)">contenuti</strong>:
+          analisi, watchlist, community, Q&amp;A di gruppo. Sono gli stessi per tutti. Con il coaching compri
+          accesso alla <strong style="color:var(--fg)">persona</strong>: il lavoro è sul tuo materiale,
+          non è replicabile e non è condiviso con nessun altro. Sono due cose diverse, non due taglie
+          dello stesso prodotto.</p>
+      </details>
+      <details>
+        <summary>Il coaching si rinnova automaticamente?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">No. La quota è trimestrale e scade: per continuare va rinnovata esplicitamente.
+          Non esiste una formula a vita per il coaching, perché il vincolo non è il prezzo — è il tempo
+          disponibile, e i posti per ciclo sono limitati.</p>
+      </details>
+      <details>
+        <summary>Posso disdire l'Advanced quando voglio?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">Sì, è un abbonamento mensile senza vincolo di durata. L'offerta founding member
+          a pagamento unico è invece definitiva e limitata alla finestra di lancio: una volta chiusa
+          non viene riproposta.</p>
+      </details>
+      <details>
+        <summary>Ricevo segnali operativi o dritte su cosa comprare?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">No, e su questo non facciamo eccezioni. Tutti i livelli sono formazione e analisi
+          generale di contesto. Non forniamo segnali operativi né raccomandazioni personalizzate di
+          acquisto o vendita: quella è consulenza in investimenti, è un'attività regolamentata, e non
+          è ciò che facciamo. Quello che impari è un metodo per decidere da solo.</p>
+      </details>
+      <details>
+        <summary>Come pago e cosa succede dopo?<span class="chev"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></summary>
+        <p class="ans">Scrivici a support@omniscent.space indicando il livello che ti interessa.
+          Ti rispondiamo entro 24 ore con le modalità di pagamento e i tempi di accesso. Per il coaching
+          fissiamo prima un colloquio conoscitivo gratuito: serve a capire se in questo momento è il
+          passo giusto per te — a volte la risposta è no, e te lo diciamo.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section class="sec" id="contact">
+  <div class="wrap">
+    <div class="cta-final rv">
+      <div class="blob blob-v"></div>
+      <p class="overline"><span class="dot"></span>Non sai da dove partire?</p>
+      <h2>Un colloquio, poi decidi.</h2>
+      <p class="lead" style="margin-left:auto;margin-right:auto">Quindici minuti per capire a che
+        punto sei e quale livello ha senso — senza impegno e senza vendita forzata.</p>
+      <div class="btns">
+        <a href="mailto:support@omniscent.space" class="btn btn-primary">Prenota il colloquio
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="vetrina-v2.html#method" class="btn btn-ghost">Rivedi il metodo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a href="vetrina-v2.html" class="logo"><img src="omniscent-logo.png" width="1195" height="357" alt="OMNISCENT® — Finance &amp; Education" class="logo-img"></a>
+        <p style="font-size:14px;max-width:38ch;margin-top:18px">Formazione privata di trading.
+          Analisi dell'orderflow, sviluppo di strategie personali e creazione di fondi PAMM.</p>
+        <p style="font-family:var(--f-mono);font-size:12px;color:var(--fg-muted);margin-top:20px">support@omniscent.space</p>
+      </div>
+      <div>
+        <h4>Piani</h4>
+        <ul>
+          <li><a href="#tiers">Corso d'ingresso</a></li>
+          <li><a href="#tiers">Sezione Advanced</a></li>
+          <li><a href="#tiers">Coaching privato</a></li>
+          <li><a href="#faq">Domande sui piani</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legale</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Termini di servizio</a></li>
+          <li><a href="#">Cookie policy</a></li>
+          <li><a href="#">Risk disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="risk">I servizi OMNISCENT® hanno finalità esclusivamente formative e di analisi generale.
+      Non costituiscono consulenza in materia di investimenti, raccomandazioni personalizzate né
+      sollecitazione all'acquisto o alla vendita di strumenti finanziari. Il trading comporta un
+      elevato livello di rischio e può comportare la perdita del capitale investito; le performance
+      passate non sono indicative di risultati futuri. Prezzi IVA esclusa ove applicabile.</p>
+    <div class="foot-bot">
+      <span>© 2026 OMNISCENT® — Tutti i diritti riservati.</span>
+      <span>a step forward</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+
+  /* ── Menu mobile ── */
+  var burger = document.querySelector('.burger'), mm = document.getElementById('mobileMenu');
+  burger.setAttribute('aria-expanded','false');
+  burger.setAttribute('aria-controls','mobileMenu');
+  burger.addEventListener('click', function(){
+    var open = mm.classList.toggle('open');
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Chiudi menu' : 'Apri menu');
+  });
+  mm.addEventListener('click', function(e){
+    if (e.target.closest('a')) { mm.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  });
+  addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && mm.classList.contains('open')) { mm.classList.remove('open'); burger.focus(); }
+  });
+})();
+</script>
+</body>
+</html>
