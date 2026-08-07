@@ -59,14 +59,14 @@ export default function Header({ variant = "landing" }) {
   return (
     <header data-testid="site-header" className="fixed top-0 left-0 right-0 z-50 glass-header">
       <div className="max-w-[1240px] mx-auto px-6 lg:px-10">
-        <div className="flex items-center justify-between h-[72px]">
+        <div className="flex items-center justify-between h-[84px]">
           <a
             href={variant === "plans" ? "#/" : "#hero"}
             data-testid="nav-logo"
             onClick={() => variant === "landing" && window.scrollTo({ top: 0, behavior: "smooth" })}
             className="flex items-center shrink-0"
           >
-            <img src={LOGO_URL} alt="OMNISCENT®" className="header-logo-img" />
+            <img src={LOGO_URL} alt="OMNISCENT® — Finance & Education" className="header-logo-img" />
           </a>
 
           <nav className="hidden lg:flex items-center gap-8" data-testid="desktop-nav">

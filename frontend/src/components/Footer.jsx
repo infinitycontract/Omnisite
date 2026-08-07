@@ -77,7 +77,7 @@ export default function Footer({ variant = "landing" }) {
           <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr]">
             <div>
               <a href={variant === "plans" ? "#/" : "#hero"} data-testid="footer-logo" className="inline-block">
-                <img src={LOGO_URL} alt="OMNISCENT®" className="h-9 w-auto object-contain" />
+                <img src={LOGO_URL} alt="OMNISCENT® — Finance & Education" className="footer-logo-img" />
               </a>
               <p className="text-sm leading-[1.7] text-[var(--fg-muted)] max-w-[38ch] mt-5">
                 {t.footer.blurb}

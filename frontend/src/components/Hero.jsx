@@ -159,13 +159,15 @@ export default function Hero() {
             );
           })}
 
-          <div className="ladder-row h-8">
+          <div className="ladder-row mid">
             <span />
-            <span className="text-center">
+            <span className="text-center leading-tight">
               <span className="block text-[13px] font-semibold text-white [text-shadow:0_0_18px_var(--violet-glow)]">
                 {BASE.toFixed(5)}
               </span>
-              <span className="text-[9px] tracking-[0.1em] text-[var(--violet-text)]">{L.spread} 0.4</span>
+              <span className="block text-[9px] tracking-[0.1em] text-[var(--violet-text)] mt-0.5">
+                {L.spread} 0.4
+              </span>
             </span>
             <span />
           </div>

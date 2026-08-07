@@ -162,12 +162,16 @@
   padding: 2px 6px;
   border-radius: 4px;
 }
+/* 56px sul desktop: sotto questa misura il payoff "Finance & Education"
+   del lockup diventa illeggibile. L'header è alto 84px per contenerlo. */
 .header-logo-img {
-  height: 34px;
+  height: 40px;
   width: auto;
+  display: block;
   object-fit: contain;
 }
-@media (min-width: 1024px) { .header-logo-img { height: 40px; } }
+@media (min-width: 1024px) { .header-logo-img { height: 56px; } }
+.footer-logo-img { height: 52px; width: auto; display: block; object-fit: contain; }
 
 /* ─── Ladder orderflow (elemento firma dell'hero) ─── */
 .ladder {
@@ -195,6 +199,13 @@
   font-family: var(--font-mono);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
+}
+/* La riga centrale impila prezzo e spread: con height fissa il secondo rigo
+   sbordava sopra la riga bid successiva. */
+.ladder-row.mid {
+  height: auto;
+  min-height: 42px;
+  padding: 4px 0;
 }
 .ladder-bar {
   position: relative;
