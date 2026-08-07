@@ -4,49 +4,67 @@ import { useLang } from "@/context/LangContext";
 import { useAuth } from "@/context/AuthContext";
 import TickerBanner from "@/components/TickerBanner";
 
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_orderflow-academy/artifacts/64cx6deb_1.png";
+const LOGO_URL = "/omniscent-logo.png";
 
-export default function Header() {
+export default function Header({ variant = "landing" }) {
   const { t, lang, toggle } = useLang();
   const { user } = useAuth();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
-    { label: t.nav.services, href: "#services" },
-    { label: t.nav.results, href: "#stats" },
-    { label: t.nav.testimonials, href: "#testimonials" },
-    { label: t.nav.about, href: "#about" },
-    { label: t.nav.faq, href: "#faq" },
-    { label: t.nav.contact, href: "#contact" },
+    { label: t.nav.method, anchor: "#method" },
+    { label: t.nav.services, anchor: "#services" },
+    { label: t.nav.plans, route: "/piani", badge: variant !== "plans" },
+    { label: t.nav.results, anchor: "#stats" },
+    { label: t.nav.about, anchor: "#about" },
+    { label: t.nav.faq, anchor: "#faq" },
   ];
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
-  const handleNavClick = (href) => {
+  /* HashRouter usa già l'hash per la rotta, quindi "#/#method" non funziona:
+     dalle altre pagine si torna prima alla home, poi si scrolla a montaggio avvenuto. */
+  const scrollTo = (anchor) => document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" });
+
+  const go = (link) => {
     setMobileOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (link.route) {
+      window.location.hash = link.route;
+      return;
+    }
+    if (variant === "landing") {
+      scrollTo(link.anchor);
+    } else {
+      window.location.hash = "/";
+      setTimeout(() => scrollTo(link.anchor), 250);
+    }
   };
 
+  const goContact = () => {
+    setMobileOpen(false);
+    if (variant === "landing") scrollTo("#contact");
+    else {
+      window.location.hash = "/";
+      setTimeout(() => scrollTo("#contact"), 250);
+    }
+  };
+
+  const authLink = user
+    ? { href: "#/dashboard", label: t.nav.dashboard, icon: true }
+    : { href: "#/login", label: t.nav.login, icon: false };
+
   return (
-    <header
-      data-testid="site-header"
-      className={`fixed top-0 left-0 right-0 z-50 bg-black transition-all duration-300 ${
-        scrolled ? "shadow-sm" : ""
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+    <header data-testid="site-header" className="fixed top-0 left-0 right-0 z-50 glass-header">
+      <div className="max-w-[1240px] mx-auto px-6 lg:px-10">
+        <div className="flex items-center justify-between h-[72px]">
           <a
-            href="#hero"
+            href={variant === "plans" ? "#/" : "#hero"}
             data-testid="nav-logo"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-3"
+            onClick={() => variant === "landing" && window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex items-center shrink-0"
           >
             <img src={LOGO_URL} alt="OMNISCENT®" className="header-logo-img" />
           </a>
@@ -54,62 +72,57 @@ export default function Header() {
           <nav className="hidden lg:flex items-center gap-8" data-testid="desktop-nav">
             {navLinks.map((link) => (
               <button
-                key={link.href}
-                data-testid={`nav-${link.href.replace("#", "")}-link`}
-                onClick={() => handleNavClick(link.href)}
-                className="text-sm font-medium text-slate-400 hover:text-violet-400 transition-colors tracking-wide"
-                style={{ fontFamily: "'Manrope', sans-serif" }}
+                key={link.label}
+                data-testid={`nav-${(link.anchor || "#piani").replace("#", "")}-link`}
+                onClick={() => go(link)}
+                className={`nav-link text-[13.5px] font-medium py-1.5 ${
+                  variant === "plans" && link.route ? "active" : ""
+                }`}
               >
                 {link.label}
+                {link.badge && <span className="badge-new ml-2 align-middle">nuovo</span>}
               </button>
             ))}
+          </nav>
+
+          <div className="flex items-center gap-2 lg:gap-4">
             <button
               data-testid="lang-toggle"
               onClick={toggle}
-              className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-white transition-colors uppercase tracking-wider border border-[#1E1E2A] px-3 py-1.5 rounded-md hover:border-violet-500/30"
-            >
-              <Globe size={13} />
-              {lang === "it" ? "EN" : "IT"}
-            </button>
-            {user ? (
-              <a
-                href="#/dashboard"
-                className="flex items-center gap-2 text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors border border-violet-500/30 px-4 py-2 rounded-md"
-              >
-                <UserCircle size={16} /> Area Riservata
-              </a>
-            ) : (
-              <a
-                href="#/login"
-                className="text-sm font-medium text-slate-400 hover:text-white transition-colors border border-[#1E1E2A] px-4 py-2 rounded-md hover:border-violet-500/30"
-              >
-                Accedi
-              </a>
-            )}
-            <button
-              onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-              data-testid="nav-cta-button"
-              className="btn-primary px-6 py-2.5 rounded-md text-sm font-medium inline-flex items-center gap-2"
-            >
-              {t.nav.cta} <ArrowRight size={14} />
-            </button>
-          </nav>
-
-          <div className="lg:hidden flex items-center gap-3">
-            <button
-              data-testid="lang-toggle-mobile"
-              onClick={toggle}
-              className="flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-white transition-colors uppercase tracking-wider border border-[#1E1E2A] px-2.5 py-1.5 rounded-md"
+              aria-label={lang === "it" ? "Switch to English" : "Passa all'italiano"}
+              className="mono flex items-center gap-1.5 text-[11px] tracking-[0.1em] text-[var(--fg-dim)] hover:text-[var(--fg)] border border-[var(--line)] hover:border-[var(--line-hi)] rounded-md px-2.5 min-h-[34px] transition-colors"
             >
               <Globe size={12} />
               {lang === "it" ? "EN" : "IT"}
             </button>
+
+            <a
+              href={authLink.href}
+              data-testid="nav-auth-link"
+              className={`btn-auth hidden lg:inline-flex items-center gap-2 min-h-[42px] px-4 rounded-[9px] text-[13px] font-medium ${
+                user ? "text-[var(--violet-text)] border-[rgba(139,92,246,0.35)]" : ""
+              }`}
+            >
+              {authLink.icon && <UserCircle size={15} />}
+              {authLink.label}
+            </a>
+
+            <button
+              onClick={goContact}
+              data-testid="nav-cta-button"
+              className="btn-primary hidden lg:inline-flex items-center gap-2 min-h-[42px] px-5 rounded-[10px] text-[13px] font-semibold"
+            >
+              {t.nav.cta} <ArrowRight size={14} />
+            </button>
+
             <button
               data-testid="mobile-menu-toggle"
-              className="lg:hidden p-2"
+              aria-label="Menu"
+              aria-expanded={mobileOpen}
+              className="lg:hidden flex items-center justify-center min-w-[44px] min-h-[44px]"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
-              {mobileOpen ? <X size={24} className="text-slate-300" /> : <Menu size={24} className="text-slate-300" />}
+              {mobileOpen ? <X size={22} className="text-[var(--fg)]" /> : <Menu size={22} className="text-[var(--fg)]" />}
             </button>
           </div>
         </div>
@@ -120,35 +133,41 @@ export default function Header() {
       {mobileOpen && (
         <div
           data-testid="mobile-menu"
-          className="lg:hidden bg-[#09090B]/95 backdrop-blur-xl border-t border-[#1E1E2A] px-6 py-6"
+          className="lg:hidden bg-[rgba(11,11,15,0.97)] backdrop-blur-xl border-t border-[var(--line)] px-6 py-5 max-h-[calc(100vh-110px)] overflow-y-auto"
         >
-          <nav className="flex flex-col gap-4">
+          <nav className="flex flex-col">
             {navLinks.map((link) => (
               <button
-                key={link.href}
-                data-testid={`mobile-nav-${link.href.replace("#", "")}-link`}
-                onClick={() => handleNavClick(link.href)}
-                className="text-base font-medium text-slate-300 hover:text-violet-400 text-left py-2 transition-colors"
+                key={link.label}
+                data-testid={`mobile-nav-${(link.anchor || "#piani").replace("#", "")}-link`}
+                onClick={() => go(link)}
+                className="text-base font-medium text-[var(--fg)] text-left py-3.5 min-h-[44px] border-b border-[var(--line)] flex items-center"
               >
                 {link.label}
+                {link.badge && <span className="badge-new ml-2">nuovo</span>}
               </button>
             ))}
-            <button
-              onClick={() => { setMobileOpen(false); document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' }); }}
-              data-testid="mobile-nav-cta-button"
-              className="btn-primary px-6 py-3 rounded-md text-sm font-medium inline-flex items-center gap-2 justify-center mt-2"
-            >
-              {t.nav.cta} <ArrowRight size={14} />
-            </button>
-            {user ? (
-              <a href="#/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 justify-center text-sm font-medium text-violet-400 border border-violet-500/30 px-6 py-3 rounded-md">
-                <UserCircle size={16} /> Area Riservata
+
+            <div className="flex flex-col gap-2.5 mt-5">
+              <button
+                onClick={goContact}
+                data-testid="mobile-nav-cta-button"
+                className="btn-primary min-h-[48px] px-6 rounded-[10px] text-sm font-semibold inline-flex items-center gap-2 justify-center"
+              >
+                {t.nav.cta} <ArrowRight size={14} />
+              </button>
+              <a
+                href={authLink.href}
+                onClick={() => setMobileOpen(false)}
+                data-testid="mobile-nav-auth-link"
+                className={`btn-auth inline-flex items-center gap-2 justify-center min-h-[48px] px-6 rounded-[10px] text-sm font-medium ${
+                  user ? "text-[var(--violet-text)] border-[rgba(139,92,246,0.35)]" : ""
+                }`}
+              >
+                {authLink.icon && <UserCircle size={15} />}
+                {authLink.label}
               </a>
-            ) : (
-              <a href="#/login" onClick={() => setMobileOpen(false)} className="flex items-center justify-center text-sm font-medium text-slate-300 border border-[#1E1E2A] px-6 py-3 rounded-md">
-                Accedi
-              </a>
-            )}
+            </div>
           </nav>
         </div>
       )}

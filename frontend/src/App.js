@@ -4,6 +4,7 @@ import { LangProvider } from "@/context/LangContext";
 import { AuthProvider } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import Method from "@/components/Method";
 import Services from "@/components/Services";
 import Stats from "@/components/Stats";
 import Testimonials from "@/components/Testimonials";
@@ -13,14 +14,16 @@ import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
+import Piani from "@/pages/Piani";
 
 function MainSite() {
   return (
     <LangProvider>
-      <div className="min-h-screen bg-[#09090B]" data-testid="app-root">
+      <div className="min-h-screen bg-[var(--bg-base)] grain" data-testid="app-root">
         <Header />
         <main>
           <Hero />
+          <Method />
           <Services />
           <Stats />
           <Testimonials />
@@ -40,6 +43,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<MainSite />} />
+          <Route path="/piani" element={<Piani />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard/*" element={<Dashboard />} />
         </Routes>
